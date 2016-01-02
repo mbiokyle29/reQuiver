@@ -5,22 +5,50 @@ author: Kyle McChesney
 """
 
 import unittest
-import lib
-import os
-import logging
-log = logging.getLogger(__name__)
+from lib import Requiver
+from httmock import urlmatch, HTTMock
+import requests
+
 
 class RequiverTest(unittest.TestCase):
+    
+    def gulp_html(self, file):
+        res = []
+        with open(file, "r+") as fh:
+            for line in fh:
+                res.append(line)
+        return "\n".join(res)
 
-    def testRequiverCreation(self):
+    # MOCKS
+    @urlmatch(netloc=r'(.*\.)?quiver\.archerdx\.com', path="/results", query="query=cancer")
+    def mock_disease_page(self, url, request):
+        return self.gulp_html('test/html/cancer.html')
 
-        rq = lib.Requiver()
-        end_point = "http://quiver.archerdx.com/results?query="
+    @urlmatch(netloc=r'(.*\.)?quiver\.archerdx\.com', path="/results", query="query=ZZZZZ")
+    def mock_no_res_page(self, url, request):
+        return self.gulp_html('test/html/no_res.html')
 
-        self.assertEqual(type(rq), lib.Requiver)
-        self.assertEqual(rq._raw_endpoint, end_point)
+    @urlmatch(netloc=r'(.*\.)?quiver\.archerdx\.com', path="/results", query="query=NOTCH1")
+    def mock_single_gene_page(self, url, request):
+        return self.gulp_html('test/html/single_gene.html')
 
-    def testRequiverQuerySingleGene(self):
+    def setUp(self):        
+        self.req = Requiver()
 
-        rq = lib.Requiver()
-        query_gene = "NOTCH1" # some example
+    def test_no_res(self):
+        
+        with HTTMock(self.mock_no_res_page):
+            no_results_get = self.req.query("ZZZZZ")
+            self.assertTrue(False)
+
+    def test_cancer_res(self):
+        
+        with HTTMock(self.mock_disease_page):
+            disease_get = self.req.query("cancer")
+            self.assertTrue(False)
+
+    def test_single_gene_res(self):
+        
+        with HTTMock(self.mock_single_gene_page):
+            disease_get = self.req.query("NOTCH1")
+            self.assertTrue(False)
