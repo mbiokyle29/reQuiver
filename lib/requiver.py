@@ -6,15 +6,16 @@ Main class file, for Requiver. For interacting with Archer DX Quiver database
 
 """
 import requests
+#from bs4 import BeautifulSoup
 
 class Requiver(object):
 
     def __init__(self):
-        self._raw_endpoint = "http://quiver.archerdx.com/results?query=" 
+        self._raw_endpoint = "http://quiver.archerdx.com/results?query="
         self._sesh = requests.Session()
 
     def query(self, query):
-        query_str = self._raw_endpoint + gene
+        query_str = self._raw_endpoint + query
         res = self._sesh.get(query_str)
         return res
 
