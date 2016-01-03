@@ -39,16 +39,13 @@ class RequiverTest(unittest.TestCase):
         
         with HTTMock(self.mock_no_res_page):
             no_results_get = self.req.query("ZZZZZ")
-            self.assertTrue(False)
-
-    def test_cancer_res(self):
-        
-        with HTTMock(self.mock_disease_page):
-            disease_get = self.req.query("cancer")
-            self.assertTrue(False)
+            self.assertEqual(len(no_results_get.panels), 0)
+            self.assertEqual(len(no_results_get.fusions), 0)
 
     def test_single_gene_res(self):
         
         with HTTMock(self.mock_single_gene_page):
-            disease_get = self.req.query("NOTCH1")
-            self.assertTrue(False)
+            notch_get = self.req.query("NOTCH1")
+            self.assertNotEqual(len(notch_get.panels), 0)
+            self.assertNotEqual(len(notch_get.fusions), 0)
+
