@@ -5,8 +5,9 @@ author: Kyle McChesney
 """
 
 import unittest
-from lib import Requiver
-from httmock import urlmatch, HTTMock
+from requiver import Requiver, QuiverFushionPlexPanel, QuiverGeneFushion
+from requiver.exceptions import EmptyQueryStringException, NetworkErrorException
+from httmock import urlmatch, HTTMock, response
 import requests
 
 
@@ -32,6 +33,10 @@ class RequiverTest(unittest.TestCase):
     def mock_single_gene_page(self, url, request):
         return self.gulp_html('test/html/single_gene.html')
 
+    @urlmatch(netloc=r'(.*\.)?quiver\.archerdx\.com', path="/results", query="query=404MEPLEASE")
+    def mock_network_error(self, url, request):
+        return response(404, "ERROR", {}, {}, 5, request)
+
     def setUp(self):        
         self.req = Requiver()
 
@@ -49,3 +54,24 @@ class RequiverTest(unittest.TestCase):
             self.assertNotEqual(len(notch_get.panels), 0)
             self.assertNotEqual(len(notch_get.fusions), 0)
 
+            for panel in notch_get.panels:
+                self.assertEqual(type(panel), QuiverFushionPlexPanel)
+
+            for fusion in notch_get.fusions:
+                self.assertEqual(type(fusion), QuiverGeneFushion)
+
+    def test_query_set_in_results(self):
+
+        with HTTMock(self.mock_single_gene_page):
+            notch_get = self.req.query("NOTCH1")
+            self.assertEqual(notch_get.query_term, "NOTCH1")
+
+    def test_empty_string_exception(self):
+
+        # dont need a mock no request will fire
+        self.assertRaises(EmptyQueryStringException, self.req.query, "")
+
+    def test_network_exception(self):
+
+        with HTTMock(self.mock_network_error):
+            self.assertRaises(NetworkErrorException, self.req.query, "404MEPLEASE")
