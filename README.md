@@ -22,8 +22,4 @@ for panel in results_set.panels:
 
 for fusion in results_set.fusions:
     print fusion.annotation
-
-
-
 ```
-
