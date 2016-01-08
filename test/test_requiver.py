@@ -5,13 +5,13 @@ author: Kyle McChesney
 """
 
 import unittest
-from requiver import Requiver, QuiverFushionPlexPanel, QuiverGeneFushion
+from requiver import reQuiver, QuiverFushionPlexPanel, QuiverGeneFushion
 from requiver.exceptions import EmptyQueryStringException, NetworkErrorException
 from httmock import urlmatch, HTTMock, response
 import requests
 
 
-class RequiverTest(unittest.TestCase):
+class reQuiverTest(unittest.TestCase):
     
     def gulp_html(self, file):
         res = []
@@ -38,7 +38,7 @@ class RequiverTest(unittest.TestCase):
         return response(404, "ERROR", {}, {}, 5, request)
 
     def setUp(self):        
-        self.req = Requiver()
+        self.req = reQuiver()
 
     def test_no_res(self):
         

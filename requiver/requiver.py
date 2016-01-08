@@ -2,7 +2,7 @@
 requiver.py
 author: Kyle McChesney
 
-Main class file, for Requiver. 
+Main class file, for reQuiver. 
 """
 import requests
 from bs4 import BeautifulSoup
@@ -12,7 +12,7 @@ from utils import panel_table_filter, fusion_table_filter, clean_string
 from exceptions import EmptyQueryStringException, NetworkErrorException
 
 
-class Requiver(object):
+class reQuiver(object):
 
     def __init__(self):
         self._raw_endpoint = "http://quiver.archerdx.com/results?query="

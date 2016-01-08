@@ -2,7 +2,7 @@
 utils.py
 author: Kyle McChesney
 
-Utility functions for Requiver
+Utility functions for reQuiver
 String cleaning and beautiful soup filter functions
 """
 

@@ -2,7 +2,7 @@
 exceptions.py
 author: Kyle McChesney
 
-Exceptions for Requiver
+Exceptions for reQuiver
 
 """
 

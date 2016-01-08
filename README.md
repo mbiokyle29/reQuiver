@@ -1,4 +1,4 @@
-# requiver
+# reQuiver
 #### Archer DX Quiver Fusion Database + Python Requests
 #### This is an **unoffical** library, all content is copyright of Archer DX ####
 #### This is also a webscraper, appropriate and responsible useage is required ####
@@ -7,10 +7,10 @@ Python Library for Interacting with Archer DX Quiver Fusion Database
 
 Example:
 ```python
-import Requiver
+import reQuiver
 
 # instantiate and query
-requiver = Requiver()
+requiver = reQuiver()
 results_set = requiver.query("cancer")  # any query is fine, gene, disease, fusion
 
 # results set is an instance of QuiverResultSet
